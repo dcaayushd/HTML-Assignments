@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration Form</title>
+</head>
+<body>
+    <h1>📚 Student Registration Form</h1>
+    <form>
+        <label>Full Name:</label><br>
+        <input type="text" required><br><br>
+
+        <label>Age:</label><br>
+        <input type="number" min="10" max="100"><br><br>
+
+        <label>Gender:</label><br>
+        <input type="radio" name="gender" value="Male"> Male
+        <input type="radio" name="gender" value="Female"> Female
+        <input type="radio" name="gender" value="Other"> Other<br><br>
+
+        <label>Course:</label><br>
+        <select>
+            <option value="btech">B.Tech</option>
+            <option value="bca">BCA</option>
+            <option value="bsc">B.Sc</option>
+        </select><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" required><br><br>
+
+        <label>Address:</label><br>
+        <textarea rows="3" cols="30"></textarea><br><br>
+
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
