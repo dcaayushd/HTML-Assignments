@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .todo-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            text-align: left;
+            background-color: #f9f9f9;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .delete-btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: red;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="todo-container">
+        <h1>📝 To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Add a new task..." />
+        <button onclick="addTask()">Add Task</button>
+
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            var taskInput = document.getElementById("taskInput");
+            var taskText = taskInput.value.trim();
+
+            if (taskText === "") {
+                alert("Please enter a task!");
+                return;
+            }
+
+            var taskList = document.getElementById("taskList");
+
+            var li = document.createElement("li");
+            li.innerHTML = taskText;
+
+            // Add complete and delete buttons to each task
+            var completeButton = document.createElement("button");
+            completeButton.innerHTML = "✔️";
+            completeButton.onclick = function() {
+                li.classList.toggle("completed");
+            };
+
+            var deleteButton = document.createElement("span");
+            deleteButton.innerHTML = "❌";
+            deleteButton.classList.add("delete-btn");
+            deleteButton.onclick = function() {
+                li.remove();
+            };
+
+            li.appendChild(completeButton);
+            li.appendChild(deleteButton);
+
+            taskList.appendChild(li);
+
+            // Clear input field after adding task
+            taskInput.value = "";
+        }
+    </script>
+
+</body>
+</html>
