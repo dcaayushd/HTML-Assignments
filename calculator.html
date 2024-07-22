@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 Simple Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .output {
+            text-align: right;
+            font-size: 2em;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 20px;
+            font-size: 1.5em;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+
+        .equal-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .equal-btn:hover {
+            background-color: #218838;
+        }
+
+        .clear-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h1>🧮 Calculator</h1>
+        <div id="output" class="output">0</div>
+        <div class="button-container">
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendOperator('+')">+</button>
+
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendOperator('-')">-</button>
+
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendOperator('*')">×</button>
+
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="clearOutput()" class="clear-btn">C</button>
+            <button onclick="calculateResult()" class="equal-btn">=</button>
+            <button onclick="appendOperator('/')">÷</button>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = "0"; // Current value displayed on the screen
+
+        function appendNumber(number) {
+            if (currentInput === "0") {
+                currentInput = number.toString();
+            } else {
+                currentInput += number.toString();
+            }
+            updateOutput();
+        }
+
+        function appendOperator(operator) {
+            // Don't allow multiple operators in a row
+            if (currentInput.endsWith('+') || currentInput.endsWith('-') || currentInput.endsWith('*') || currentInput.endsWith('/')) {
+                return;
+            }
+            currentInput += operator;
+            updateOutput();
+        }
+
+        function clearOutput() {
+            currentInput = "0";
+            updateOutput();
+        }
+
+        function calculateResult() {
+            try {
+                currentInput = eval(currentInput).toString(); // Use eval to compute the result
+            } catch (error) {
+                currentInput = "Error";
+            }
+            updateOutput();
+        }
+
+        function updateOutput() {
+            document.getElementById("output").innerText = currentInput;
+        }
+    </script>
+
+</body>
+</html>
