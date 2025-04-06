@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quote Generator</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.3);
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 500px;
+    }
+
+    blockquote {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    span {
+      display: block;
+      margin-top: 10px;
+      font-style: italic;
+      color: #ffdd57;
+    }
+
+    button {
+      background: #fff;
+      color: #764ba2;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <blockquote id="quote">Click the button to get a quote!</blockquote>
+    <span id="author"></span>
+    <button onclick="generateQuote()">New Quote</button>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "The best way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+      { text: "Don't let yesterday take up too much of today.", author: "Will Rogers" },
+      { text: "It's not whether you get knocked down, it's whether you get up.", author: "Vince Lombardi" },
+      { text: "If you are working on something exciting, it will keep you motivated.", author: "Steve Jobs" },
+    ];
+
+    function generateQuote() {
+      const random = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('quote').textContent = `"${random.text}"`;
+      document.getElementById('author').textContent = `- ${random.author}`;
+    }
+  </script>
+</body>
+</html>
