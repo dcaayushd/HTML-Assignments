@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Joke Generator</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: #f7971e;
+      background: linear-gradient(to right, #ffd200, #f7971e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 500px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #f7971e;
+    }
+
+    p {
+      font-size: 1.3rem;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    button {
+      background: #f7971e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ffa94d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>😂 Joke of the Moment</h1>
+    <p id="joke">Click the button to laugh!</p>
+    <button onclick="getJoke()">Get Joke</button>
+  </div>
+
+  <script>
+    const jokes = [
+      "Why don't scientists trust atoms? Because they make up everything!",
+      "Why did the math book look sad? Because it had too many problems.",
+      "Why can't your nose be 12 inches long? Because then it would be a foot!",
+      "Parallel lines have so much in common. It’s a shame they’ll never meet."
+    ];
+
+    function getJoke() {
+      const random = Math.floor(Math.random() * jokes.length);
+      document.getElementById('joke').textContent = jokes[random];
+    }
+  </script>
+</body>
+</html>
