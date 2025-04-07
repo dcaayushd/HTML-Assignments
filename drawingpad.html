@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Drawing Pad</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #1e1e2f;
+      color: #fff;
+      height: 100vh;
+    }
+
+    h1 {
+      margin: 10px 0;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .toolbar input[type="color"],
+    .toolbar input[type="range"],
+    .toolbar button {
+      padding: 5px 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .toolbar button {
+      background-color: #f05454;
+      color: white;
+      cursor: pointer;
+    }
+
+    canvas {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      touch-action: none;
+      background: white;
+    }
+
+    @media (max-width: 600px) {
+      canvas {
+        width: 90vw !important;
+        height: 60vh !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Drawing Pad</h1>
+  <div class="toolbar">
+    <input type="color" id="colorPicker" value="#000000" />
+    <input type="range" id="brushSize" min="1" max="20" value="5" />
+    <button onclick="clearCanvas()">Clear</button>
+  </div>
+  <canvas id="canvas" width="800" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+    const brushSize = document.getElementById('brushSize');
+
+    let painting = false;
+
+    function startPosition(e) {
+      painting = true;
+      draw(e);
+    }
+
+    function endPosition() {
+      painting = false;
+      ctx.beginPath();
+    }
+
+    function draw(e) {
+      if (!painting) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || e.touches[0].clientX) - rect.left;
+      const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+      ctx.lineWidth = brushSize.value;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = colorPicker.value;
+
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Mouse events
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mouseup', endPosition);
+    canvas.addEventListener('mousemove', draw);
+
+    // Touch events
+    canvas.addEventListener('touchstart', startPosition);
+    canvas.addEventListener('touchend', endPosition);
+    canvas.addEventListener('touchmove', draw);
+  </script>
+</body>
+</html>
