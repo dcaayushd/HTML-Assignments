@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spin the Wheel</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #222;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #fcd34d;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 10px solid #444;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      transform: rotate(0deg);
+      transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .segment {
+      width: 50%;
+      height: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 5px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .segment:nth-child(odd) { background: #fcd34d; }
+    .segment:nth-child(even) { background: #f87171; }
+
+    .pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid #22d3ee;
+      position: absolute;
+      top: -30px;
+      left: calc(50% - 20px);
+      z-index: 10;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #22c55e;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #4ade80;
+    }
+
+    @media (max-width: 400px) {
+      .wheel-container {
+        width: 250px;
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Spin the Wheel</h1>
+  <div class="wheel-container">
+    <div class="pointer"></div>
+    <div class="wheel" id="wheel">
+      <div class="segment">Free Coffee</div>
+      <div class="segment">10% Off</div>
+      <div class="segment">Try Again</div>
+      <div class="segment">Free Sticker</div>
+      <div class="segment">Lucky Draw</div>
+      <div class="segment">15% Off</div>
+      <div class="segment">Try Again</div>
+      <div class="segment">Free T-Shirt</div>
+    </div>
+  </div>
+  <button onclick="spinWheel()">🎉 Spin</button>
+  <div id="result"></div>
+
+  <script>
+    const wheel = document.getElementById("wheel");
+    const result = document.getElementById("result");
+    const segments = [
+      "Free Coffee", "10% Off", "Try Again", "Free Sticker",
+      "Lucky Draw", "15% Off", "Try Again", "Free T-Shirt"
+    ];
+
+    let isSpinning = false;
+
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+      result.textContent = "";
+
+      const randDeg = Math.floor(Math.random() * 360 + 1440); // spin at least 4 full rounds
+      wheel.style.transform = `rotate(${randDeg}deg)`;
+
+      const index = Math.floor(((randDeg % 360) / 360) * segments.length);
+      const winningIndex = (segments.length - index) % segments.length;
+
+      setTimeout(() => {
+        result.textContent = `You got: 🎁 ${segments[winningIndex]}!`;
+        isSpinning = false;
+      }, 5000); 
+    }
+  </script>
+</body>
+</html>
