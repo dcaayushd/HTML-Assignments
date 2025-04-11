@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Audio Player</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #60a5fa;
+    }
+
+    audio {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 20px;
+    }
+
+    label {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎧 Audio Player</h1>
+  <label for="audioFile">Choose an audio file:</label>
+  <input type="file" id="audioFile" accept="audio/*" />
+  <audio id="player" controls></audio>
+
+  <script>
+    const input = document.getElementById('audioFile');
+    const player = document.getElementById('player');
+
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        player.src = url;
+        player.play();
+      }
+    });
+  </script>
+</body>
+</html>
