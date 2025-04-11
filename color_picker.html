@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Picker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #facc15;
+    }
+
+    input[type="color"] {
+      width: 150px;
+      height: 150px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      margin: 20px 0;
+    }
+
+    .code {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Color Picker</h1>
+  <input type="color" id="colorInput" />
+  <div class="code" id="code">#ffffff</div>
+
+  <script>
+    const input = document.getElementById('colorInput');
+    const code = document.getElementById('code');
+
+    input.addEventListener('input', () => {
+      document.body.style.background = input.value;
+      code.textContent = input.value;
+    });
+  </script>
+</body>
+</html>
