@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #facc15;
+    }
+
+    .game-box {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 1rem;
+      width: 80%;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      background: #334155;
+      color: white;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #22c55e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔢 Number Guessing Game</h1>
+  <div class="game-box">
+    <p>Guess a number between <strong>1 and 100</strong></p>
+    <input type="number" id="guess" min="1" max="100" placeholder="Enter your guess" />
+    <br />
+    <button onclick="checkGuess()">Check</button>
+    <div class="message" id="message"></div>
+    <button onclick="restartGame()" style="display:none;" id="restartBtn">Play Again</button>
+  </div>
+
+  <script>
+    let secret = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+
+    function checkGuess() {
+      const guess = parseInt(document.getElementById("guess").value);
+      const msg = document.getElementById("message");
+
+      if (isNaN(guess) || guess < 1 || guess > 100) {
+        msg.innerHTML = "🚫 Please enter a number between 1 and 100.";
+        return;
+      }
+
+      attempts++;
+
+      if (guess === secret) {
+        msg.innerHTML = `✅ Correct! You guessed it in ${attempts} attempt(s)! 🎉`;
+        document.getElementById("restartBtn").style.display = "inline-block";
+      } else if (guess < secret) {
+        msg.innerHTML = "🔻 Too low! Try again.";
+      } else {
+        msg.innerHTML = "🔺 Too high! Try again.";
+      }
+    }
+
+    function restartGame() {
+      secret = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      document.getElementById("guess").value = "";
+      document.getElementById("message").innerHTML = "";
+      document.getElementById("restartBtn").style.display = "none";
+    }
+  </script>
+</body>
+</html>
