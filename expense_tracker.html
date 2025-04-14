@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      text-align: center;
+      color: #facc15;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    input {
+      background: #334155;
+      color: white;
+    }
+
+    button {
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .expense-list {
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .expense-item {
+      background: #334155;
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .total {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💸 Expense Tracker</h1>
+    <input type="text" id="title" placeholder="Expense Title" />
+    <input type="number" id="amount" placeholder="Amount" />
+    <button onclick="addExpense()">Add Expense</button>
+
+    <div class="expense-list" id="expenseList"></div>
+    <div class="total" id="total">Total: ₹0</div>
+  </div>
+
+  <script>
+    let expenses = [];
+
+    function addExpense() {
+      const title = document.getElementById('title').value.trim();
+      const amount = parseFloat(document.getElementById('amount').value);
+      const list = document.getElementById('expenseList');
+      const totalDisplay = document.getElementById('total');
+
+      if (!title || isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid title and amount.");
+        return;
+      }
+
+      expenses.push({ title, amount });
+
+      // Clear input
+      document.getElementById('title').value = '';
+      document.getElementById('amount').value = '';
+
+      // Update list
+      list.innerHTML = '';
+      let total = 0;
+      expenses.forEach(exp => {
+        total += exp.amount;
+        const div = document.createElement('div');
+        div.className = 'expense-item';
+        div.innerHTML = `<span>${exp.title}</span><span>₹${exp.amount.toFixed(2)}</span>`;
+        list.appendChild(div);
+      });
+
+      totalDisplay.textContent = `Total: ₹${total.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
