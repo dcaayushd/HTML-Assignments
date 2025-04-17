@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Age Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 12px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+
+    h1 {
+      color: #facc15;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 15px;
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #38bdf8;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Age Calculator</h1>
+    <input type="date" id="birthdate" />
+    <button onclick="calculateAge()">Calculate Age</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      const birthdate = new Date(document.getElementById('birthdate').value);
+      const today = new Date();
+      if (!birthdate || birthdate >= today) {
+        document.getElementById('result').textContent = 'Please select a valid birthdate.';
+        return;
+      }
+
+      let years = today.getFullYear() - birthdate.getFullYear();
+      let months = today.getMonth() - birthdate.getMonth();
+      let days = today.getDate() - birthdate.getDate();
+
+      if (days < 0) {
+        months--;
+        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      document.getElementById('result').textContent = 
+        `You are ${years} year(s), ${months} month(s), and ${days} day(s) old.`;
+    }
+  </script>
+</body>
+</html>
