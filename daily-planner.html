@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Planner</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .planner {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #facc15;
+      margin-bottom: 20px;
+    }
+
+    .time-block {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hour {
+      width: 80px;
+      font-weight: bold;
+    }
+
+    .task-input {
+      flex: 1;
+      margin: 0 10px;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    button {
+      background: #38bdf8;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+  </style>
+</head>
+<body>
+  <div class="planner">
+    <h1>📅 Daily Planner</h1>
+    <div id="blocks"></div>
+  </div>
+
+  <script>
+    const hours = Array.from({length: 10}, (_, i) => i + 8); // 8AM to 5PM
+
+    function loadPlanner() {
+      const container = document.getElementById('blocks');
+      container.innerHTML = '';
+      hours.forEach(hour => {
+        const saved = localStorage.getItem(`task-${hour}`) || '';
+        container.innerHTML += `
+          <div class="time-block">
+            <div class="hour">${hour}:00</div>
+            <input class="task-input" id="input-${hour}" value="${saved}" placeholder="Enter task..." />
+            <button onclick="saveTask(${hour})">💾</button>
+          </div>
+        `;
+      });
+    }
+
+    function saveTask(hour) {
+      const input = document.getElementById(`input-${hour}`).value;
+      localStorage.setItem(`task-${hour}`, input);
+    }
+
+    loadPlanner();
+  </script>
+</body>
+</html>
