@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Username Checker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 {
+      color: #facc15;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #38bdf8;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .available {
+      color: #22c55e;
+    }
+
+    .taken {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🔐 Username Checker</h2>
+    <input type="text" id="username" placeholder="Enter a username..." />
+    <button onclick="checkUsername()">Check Availability</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const takenUsernames = ['admin', 'user123', 'test', 'john', 'demo'];
+
+    function checkUsername() {
+      const input = document.getElementById('username').value.trim().toLowerCase();
+      const result = document.getElementById('result');
+
+      if (!input) {
+        result.textContent = "Please enter a username.";
+        result.className = "result taken";
+        return;
+      }
+
+      if (takenUsernames.includes(input)) {
+        result.textContent = "❌ Username is already taken.";
+        result.className = "result taken";
+      } else {
+        result.textContent = "✅ Username is available!";
+        result.className = "result available";
+      }
+    }
+  </script>
+</body>
+</html>
