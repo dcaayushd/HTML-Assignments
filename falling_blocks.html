@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini Arcade - Dodge Blocks</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    canvas {
+      background: #1e293b;
+      border: 4px solid #facc15;
+      border-radius: 10px;
+    }
+
+    #score {
+      position: absolute;
+      top: 20px;
+      color: #facc15;
+      font-size: 1.5rem;
+      font-weight: bold;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+  <canvas id="game" width="400" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+
+    const player = {
+      x: 180,
+      y: 550,
+      width: 40,
+      height: 20,
+      speed: 5,
+      dx: 0
+    };
+
+    const blocks = [];
+    let score = 0;
+    let gameOver = false;
+
+    function createBlock() {
+      const size = Math.random() * 30 + 20;
+      const x = Math.random() * (canvas.width - size);
+      blocks.push({ x, y: -size, size, speed: Math.random() * 2 + 2 });
+    }
+
+    function drawPlayer() {
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    function drawBlocks() {
+      ctx.fillStyle = '#ef4444';
+      blocks.forEach(block => {
+        ctx.fillRect(block.x, block.y, block.size, block.size);
+      });
+    }
+
+    function movePlayer() {
+      player.x += player.dx;
+      if (player.x < 0) player.x = 0;
+      if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+    }
+
+    function updateBlocks() {
+      for (let i = blocks.length - 1; i >= 0; i--) {
+        blocks[i].y += blocks[i].speed;
+
+        // Collision detection
+        if (
+          blocks[i].x < player.x + player.width &&
+          blocks[i].x + blocks[i].size > player.x &&
+          blocks[i].y < player.y + player.height &&
+          blocks[i].y + blocks[i].size > player.y
+        ) {
+          gameOver = true;
+        }
+
+        if (blocks[i].y > canvas.height) {
+          blocks.splice(i, 1);
+          score++;
+        }
+      }
+    }
+
+    function draw() {
+      if (gameOver) {
+        ctx.fillStyle = "#f87171";
+        ctx.font = "30px monospace";
+        ctx.fillText("💀 Game Over!", 100, 300);
+        ctx.fillText(`Score: ${score}`, 140, 350);
+        return;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+      drawBlocks();
+      movePlayer();
+      updateBlocks();
+      scoreEl.textContent = `Score: ${score}`;
+      requestAnimationFrame(draw);
+    }
+
+    setInterval(() => {
+      if (!gameOver) createBlock();
+    }, 700);
+
+    function keyDown(e) {
+      if (e.key === 'ArrowRight') player.dx = player.speed;
+      else if (e.key === 'ArrowLeft') player.dx = -player.speed;
+    }
+
+    function keyUp(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') player.dx = 0;
+    }
+
+    document.addEventListener('keydown', keyDown);
+    document.addEventListener('keyup', keyUp);
+
+    draw();
+  </script>
+</body>
+</html>
