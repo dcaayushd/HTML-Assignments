@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Archery Shooter</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #0f172a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    canvas {
+      background: #1e293b;
+      border: 5px solid #facc15;
+      border-radius: 12px;
+    }
+    #score {
+      position: absolute;
+      top: 20px;
+      color: #facc15;
+      font-size: 1.5rem;
+      font-weight: bold;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+  <canvas id="game" width="500" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+
+    const bow = {
+      x: 50,
+      y: canvas.height / 2 - 40,
+      width: 20,
+      height: 80,
+      speed: 5,
+      dy: 0
+    };
+
+    const arrows = [];
+    const target = {
+      x: canvas.width - 60,
+      y: Math.random() * (canvas.height - 100),
+      width: 40,
+      height: 60,
+      speed: 2
+    };
+
+    let score = 0;
+
+    function drawBow() {
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(bow.x, bow.y, bow.width, bow.height);
+    }
+
+    function drawArrows() {
+      ctx.fillStyle = '#f87171';
+      arrows.forEach(arrow => {
+        ctx.fillRect(arrow.x, arrow.y, arrow.width, arrow.height);
+      });
+    }
+
+    function drawTarget() {
+      ctx.fillStyle = '#22c55e';
+      ctx.fillRect(target.x, target.y, target.width, target.height);
+    }
+
+    function moveBow() {
+      bow.y += bow.dy;
+      if (bow.y < 0) bow.y = 0;
+      if (bow.y + bow.height > canvas.height) bow.y = canvas.height - bow.height;
+    }
+
+    function moveArrows() {
+      arrows.forEach(arrow => {
+        arrow.x += arrow.speed;
+      });
+    }
+
+    function moveTarget() {
+      target.y += target.speed;
+      if (target.y <= 0 || target.y + target.height >= canvas.height) {
+        target.speed *= -1; // bounce vertically
+      }
+    }
+
+    function checkCollision() {
+      for (let i = arrows.length - 1; i >= 0; i--) {
+        const arrow = arrows[i];
+        if (
+          arrow.x < target.x + target.width &&
+          arrow.x + arrow.width > target.x &&
+          arrow.y < target.y + target.height &&
+          arrow.y + arrow.height > target.y
+        ) {
+          arrows.splice(i, 1);
+          score++;
+          target.y = Math.random() * (canvas.height - target.height);
+        } else if (arrow.x > canvas.width) {
+          arrows.splice(i, 1);
+        }
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBow();
+      drawArrows();
+      drawTarget();
+      moveBow();
+      moveArrows();
+      moveTarget();
+      checkCollision();
+      scoreEl.textContent = `Score: ${score}`;
+
+      requestAnimationFrame(draw);
+    }
+
+    function shootArrow() {
+      arrows.push({
+        x: bow.x + bow.width,
+        y: bow.y + bow.height / 2 - 5,
+        width: 20,
+        height: 5,
+        speed: 7
+      });
+    }
+
+    function keyDown(e) {
+      if (e.key === 'ArrowUp') bow.dy = -bow.speed;
+      if (e.key === 'ArrowDown') bow.dy = bow.speed;
+      if (e.key === ' ') shootArrow();
+    }
+
+    function keyUp(e) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') bow.dy = 0;
+    }
+
+    document.addEventListener('keydown', keyDown);
+    document.addEventListener('keyup', keyUp);
+
+    draw();
+  </script>
+</body>
+</html>
