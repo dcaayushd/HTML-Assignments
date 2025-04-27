@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ball Bounce Physics Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #0f172a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    canvas {
+      background: #1e293b;
+      border: 5px solid #facc15;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="game" width="500" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+
+    const gravity = 0.5;
+    const friction = 0.7;
+
+    const ball = {
+      x: canvas.width / 2,
+      y: 100,
+      radius: 20,
+      color: "#38bdf8",
+      dx: 4,
+      dy: 2
+    };
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = ball.color;
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      drawBall();
+
+      // Gravity
+      ball.dy += gravity;
+      ball.y += ball.dy;
+      ball.x += ball.dx;
+
+      // Bounce off the floor
+      if (ball.y + ball.radius > canvas.height) {
+        ball.y = canvas.height - ball.radius;
+        ball.dy = -ball.dy * friction;
+      }
+
+      // Bounce off the ceiling
+      if (ball.y - ball.radius < 0) {
+        ball.y = ball.radius;
+        ball.dy = -ball.dy * friction;
+      }
+
+      // Bounce off the right wall
+      if (ball.x + ball.radius > canvas.width) {
+        ball.x = canvas.width - ball.radius;
+        ball.dx = -ball.dx * friction;
+      }
+
+      // Bounce off the left wall
+      if (ball.x - ball.radius < 0) {
+        ball.x = ball.radius;
+        ball.dx = -ball.dx * friction;
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    canvas.addEventListener('click', (e) => {
+      // On click, move ball towards click position
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      ball.dx = (clickX - ball.x) * 0.1;
+      ball.dy = (clickY - ball.y) * 0.1;
+    });
+
+    update();
+  </script>
+</body>
+</html>
